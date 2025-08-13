@@ -40,13 +40,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 media/
-public/videos/
-public/projects images/
-public/images/*.jpg
-public/images/*.jpeg
-public/images/*.png
-!public/images/NewPDLogo.png
-!public/images/NewPDFavicon.png
-
-# Large media files
+# Keep videos out of git; allow images to be tracked
 public/videos/
