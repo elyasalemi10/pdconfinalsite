@@ -21,20 +21,26 @@ export async function GET(_req: NextRequest, { params }: { params: { tag: string
     return NextResponse.json({ error: 'Invalid tag' }, { status: 400 });
   }
 
+  let targetUrl: string | undefined;
   try {
     const asset = await prisma.asset.findFirst({ where: { tag } });
-    const targetUrl = asset?.publicUrl?.trim() || fallbackByTag[tag];
-
-    if (targetUrl) {
-      // Redirect to the actual image URL (external or local under /images)
-      return NextResponse.redirect(targetUrl, { status: 307 });
-    }
-
-    return NextResponse.json({ error: 'Asset not found' }, { status: 404 });
-  } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : 'Unexpected error';
-    return NextResponse.json({ error: msg }, { status: 500 });
+    targetUrl = asset?.publicUrl?.trim();
+  } catch {
+    // Ignore DB errors in dev; fall back to local
   }
+
+  if (!targetUrl) {
+    targetUrl = fallbackByTag[tag];
+  }
+
+  if (targetUrl) {
+    const redirectTarget = targetUrl.startsWith('/')
+      ? new URL(targetUrl, _req.url)
+      : targetUrl;
+    return NextResponse.redirect(redirectTarget as URL | string, { status: 307 });
+  }
+
+  return NextResponse.json({ error: 'Asset not found' }, { status: 404 });
 }
 
 
