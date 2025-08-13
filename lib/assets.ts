@@ -1,6 +1,10 @@
+// Deprecated: direct public paths are used now instead of API indirection
 export function assetUrlByTag(tag: string): string {
-  // Frontend helper to resolve asset by tag via API redirect
-  return `/api/assets/${encodeURIComponent(tag)}`;
+  switch (tag) {
+    case 'header-logo':
+    case 'footer-logo':
+      return '/images/NewPDLogo.png';
+    default:
+      return '/images/thumbnail.png';
+  }
 }
-
-

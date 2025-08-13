@@ -2,7 +2,6 @@
 
 import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
-import { assetUrlByTag } from "@/lib/assets"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { ArrowRight, Menu, X, ChevronDown } from "lucide-react"
@@ -93,7 +92,7 @@ export default function Header() {
             <Link href="/" className="flex items-center gap-2 sm:gap-3 group">
               <div className="relative w-20 h-20 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-32 lg:h-32 xl:w-36 xl:h-36">
                 <Image
-                  src={assetUrlByTag("header-logo")}
+                  src={"/images/NewPDLogo.png"}
                   alt="PdCon Logo"
                   fill
                   className="object-contain"

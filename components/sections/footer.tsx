@@ -3,7 +3,6 @@
 import { motion } from "framer-motion"
 import Link from "next/link"
 import Image from "next/image"
-import { assetUrlByTag } from "@/lib/assets"
 import { Phone, Mail, MapPin, Clock } from "lucide-react"
 
 const navigation = {
@@ -49,7 +48,7 @@ export default function Footer() {
                 <Link href="/" className="inline-block mb-3 sm:mb-4">
                   <div className="relative w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 lg:w-36 lg:h-36 xl:w-40 xl:h-40">
                     <Image
-                      src={assetUrlByTag("footer-logo")}
+                      src={"/images/NewPDLogo.png"}
                       alt="PdCon Logo"
                       fill
                       className="object-contain"
