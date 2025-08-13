@@ -1,0 +1,32 @@
+// Prisma schema for local SQLite asset store
+// Security note: Do not commit the SQLite DB to version control
+// The DB will hold only metadata and link to external URLs
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Asset {
+  id           String   @id @default(cuid())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  // Original filename for reference
+  filename     String
+  // Public URL to load the asset from a secure CDN/object storage
+  publicUrl    String
+  // MIME type for validation and headers
+  contentType  String
+  // Optional alt text for images
+  alt          String?
+  // Simple tag or section reference (e.g. "header-logo")
+  tag          String?
+
+  @@index([tag])
+}
+
+
