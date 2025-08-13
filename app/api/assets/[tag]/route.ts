@@ -15,8 +15,8 @@ function buildSignedUrl(url: string): string {
   return `${url}${separator}e=${expires}&sig=${sig}`;
 }
 
-export async function GET(_req: Request, { params }: { params: { tag: string } }) {
-  const tag = decodeURIComponent(params.tag);
+export async function GET(_req: Request, { params }) {
+  const tag = decodeURIComponent((params as { tag: string }).tag);
 
   const asset = await prisma.asset.findFirst({ where: { tag } });
   if (!asset) {
