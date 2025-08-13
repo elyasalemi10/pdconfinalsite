@@ -24,8 +24,11 @@ export default function UploadPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data?.error || "Upload failed");
       setUrl(data.url);
-    } catch (err: any) {
-      setError(err.message || "Upload failed");
+    } catch (err: unknown) {
+      let message = "Upload failed";
+      if (err instanceof Error) message = err.message;
+      else if (typeof err === "string") message = err;
+      setError(message);
     } finally {
       setIsUploading(false);
     }
