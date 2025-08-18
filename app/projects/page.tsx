@@ -270,15 +270,27 @@ export default function ProjectsPage() {
       <main className="relative">
         {/* Hero Section - Large Background Design */}
         <section className="relative min-h-[80vh] w-full flex items-center justify-center overflow-hidden">
-          {/* Large Background Image */}
+          {/* Background Video */}
           <div className="absolute inset-0">
-                          <Image
-                src="/images/projects hero.jpg"
-                alt="Proven Success, Delivered Results"
-                fill
-                className="object-cover object-top"
-                priority
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover"
+            >
+              <source src="/videos/projects.webm" type="video/webm" />
+              {/* Fallback background image if video fails to load */}
+              <div 
+                className="absolute inset-0 w-full h-full"
+                style={{
+                  backgroundImage: 'url(/images/projects hero.jpg)',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center top',
+                  backgroundRepeat: 'no-repeat'
+                }}
               />
+            </video>
             <div className="absolute inset-0 bg-black/60" />
           </div>
 

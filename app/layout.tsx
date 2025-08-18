@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Montserrat } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/sections/header";
-import ChatbotButton from "@/components/ui/chatbot-button";
+
 
 const inter = Inter({
   variable: "--font-inter",
@@ -43,7 +43,6 @@ export default function RootLayout({
       <body className={`${inter.variable} ${montserrat.variable} antialiased font-sans`}>
         <Header />
         {children}
-        <ChatbotButton />
       </body>
     </html>
   );

@@ -8,16 +8,27 @@ import Link from "next/link"
 export default function HeroGeometric() {
   return (
     <section className="relative min-h-screen w-full flex items-center overflow-hidden" style={{ backgroundColor: '#0f172a' }}>
-      {/* Background Image */}
-      <div 
-        className="absolute inset-0 z-0"
-        style={{
-          backgroundImage: 'url(/images/newhero1.jpg)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}
-      >
+      {/* Background Video */}
+      <div className="absolute inset-0 z-0">
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source src="/videos/landing.webm" type="video/webm" />
+          {/* Fallback background image if video fails to load */}
+          <div 
+            className="absolute inset-0 w-full h-full"
+            style={{
+              backgroundImage: 'url(/images/newhero1.jpg)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat'
+            }}
+          />
+        </video>
         {/* Dark overlay for better text readability */}
         <div className="absolute inset-0 bg-black/50"></div>
       </div>
