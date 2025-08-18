@@ -40,5 +40,3 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 media/
-# Keep videos out of git; allow images to be tracked
-public/videos/
