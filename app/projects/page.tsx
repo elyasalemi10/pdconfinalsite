@@ -554,7 +554,7 @@ export default function ProjectsPage() {
                 } else if (projectTitle === "Duplex" && index === 3) {
                   // Second Mordialloc card uses Mordialloc 2 folder
                   projectImages = [
-                    "/projects images/Mordialloc 2/Main 1.JPEG",
+                    "/projects images/Mordialloc 2/Main 1.jpg",
                     "/projects images/Mordialloc 2/Main 2.jpg",
                     "/projects images/Mordialloc 2/Main 3.jpg",
                     "/projects images/Mordialloc 2/Main 4.jpg",
