@@ -423,7 +423,7 @@ export default function ProjectsPage() {
                 "Duplex",
                 "Duplex",
                 "6 Townhouses",
-                "Devon Meadows",
+                "4 Luxury Townhouses",
                 "6 Townhouses",
                 "3 Luxury Townhouses"
               ].map((projectTitle, index) => {
@@ -462,19 +462,32 @@ export default function ProjectsPage() {
                     "/projects images/Narre Warren/6.png",
                     "/projects images/Narre Warren/7.png"
                   ];
-                } else if (projectTitle === "Devon Meadows") {
+                } else if (projectTitle === "4 Luxury Townhouses" && index === 6) {
+                  // Devon Meadows project
                   projectImages = [
-                    "/projects images/Devon Meadows/Main 1.jpg",
-                    "/projects images/Devon Meadows/Main 2.jpg",
-                    "/projects images/Devon Meadows/Main 3.jpg",
-                    "/projects images/Devon Meadows/Main 4.jpg",
-                    "/projects images/Devon Meadows/DSC03619.jpg",
-                    "/projects images/Devon Meadows/DSC03629.jpg",
-                    "/projects images/Devon Meadows/DSC03649.jpg",
-                    "/projects images/Devon Meadows/DSC03659.jpg",
-                    "/projects images/Devon Meadows/DSC03674.jpg",
-                    "/projects images/Devon Meadows/DSC03694.jpg",
-                    "/projects images/Devon Meadows/DSC03729.jpg"
+                    "/projects images/Devon Meadows/1.jpg",
+                    "/projects images/Devon Meadows/1.1.jpg",
+                    "/projects images/Devon Meadows/2.jpg",
+                    "/projects images/Devon Meadows/3.jpg",
+                    "/projects images/Devon Meadows/4.jpg",
+                    "/projects images/Devon Meadows/4B.jpg",
+                    "/projects images/Devon Meadows/5.jpg",
+                    "/projects images/Devon Meadows/6.jpg",
+                    "/projects images/Devon Meadows/7.jpg",
+                    "/projects images/Devon Meadows/8.jpg",
+                    "/projects images/Devon Meadows/8B.jpg",
+                    "/projects images/Devon Meadows/9.jpg",
+                    "/projects images/Devon Meadows/10.jpg",
+                    "/projects images/Devon Meadows/11.jpg",
+                    "/projects images/Devon Meadows/12.jpg",
+                    "/projects images/Devon Meadows/13.jpg",
+                    "/projects images/Devon Meadows/14.jpg",
+                    "/projects images/Devon Meadows/15.jpg",
+                    "/projects images/Devon Meadows/16.jpg",
+                    "/projects images/Devon Meadows/17.jpg",
+                    "/projects images/Devon Meadows/18.jpg",
+                    "/projects images/Devon Meadows/19.jpg",
+                    "/projects images/Devon Meadows/20.jpg"
                   ];
                 } else if (projectTitle === "3 Luxury Townhouses" && index === 1) {
                   // First Mordialloc card uses Mordialloc folder
