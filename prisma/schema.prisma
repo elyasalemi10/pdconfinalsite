@@ -7,7 +7,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -15,18 +15,27 @@ model Asset {
   id           String   @id @default(cuid())
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-  // Original filename for reference
   filename     String
-  // Public URL to load the asset from a secure CDN/object storage
   publicUrl    String
-  // MIME type for validation and headers
   contentType  String
-  // Optional alt text for images
   alt          String?
-  // Simple tag or section reference (e.g. "header-logo")
   tag          String?
 
   @@index([tag])
+}
+
+model Product {
+  id                     String   @id @default(cuid())
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+  code                   String   @unique
+  area                   String
+  areaDescription        String?
+  description            String
+  manufacturerDescription String?
+  productDetails         String?
+  price                  Decimal? @db.Decimal(10, 2)
+  imageUrl               String
 }
 
 
