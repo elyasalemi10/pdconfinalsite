@@ -8,7 +8,6 @@ type Product = {
   id: string;
   code: string;
   area: string;
-  areaDescription: string | null;
   description: string;
   manufacturerDescription: string | null;
   productDetails: string | null;
@@ -68,7 +67,6 @@ export default function ProductSelection() {
         "product-details": row.productDetails ?? "",
         "area-description":
           row.areaDescriptionOverride ||
-          row.areaDescription ||
           defaultAreaDescription ||
           row.area,
         quantity: row.quantity,
@@ -92,7 +90,7 @@ export default function ProductSelection() {
           notes: "",
           priceOverride: product.price?.toString() ?? "",
           areaDescriptionOverride:
-            product.areaDescription ?? defaultAreaDescription ?? product.area,
+            defaultAreaDescription ?? product.area,
         },
       ];
     });

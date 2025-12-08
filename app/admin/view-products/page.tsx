@@ -42,7 +42,6 @@ export default async function ViewProductsPage() {
                 <th className="p-3">Manufacturer</th>
                 <th className="p-3">Product Details</th>
                 <th className="p-3">Area</th>
-                <th className="p-3">Area Description</th>
                 <th className="p-3">Price</th>
                 <th className="p-3">Created</th>
               </tr>
@@ -71,7 +70,6 @@ export default async function ViewProductsPage() {
                   </td>
                   <td className="p-3">{p.productDetails || "—"}</td>
                   <td className="p-3">{p.area}</td>
-                  <td className="p-3">{p.areaDescription || "—"}</td>
                   <td className="p-3">
                     {p.price !== null ? `$${p.price?.toString()}` : "—"}
                   </td>
@@ -83,7 +81,7 @@ export default async function ViewProductsPage() {
               {products.length === 0 && (
                 <tr>
                   <td
-                    colSpan={9}
+                    colSpan={8}
                     className="p-4 text-sm text-slate-500 text-center"
                   >
                     No products found.

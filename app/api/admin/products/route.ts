@@ -63,8 +63,6 @@ export async function POST(request: Request) {
   const manufacturerDescription =
     formData.get("manufacturerDescription")?.toString() || "";
   const productDetails = formData.get("productDetails")?.toString() || "";
-  const areaDescription =
-    formData.get("areaDescription")?.toString().trim() || null;
   const priceRaw = formData.get("price")?.toString() || "";
   const image = formData.get("image") as File | null;
 
@@ -104,7 +102,6 @@ export async function POST(request: Request) {
       description,
       manufacturerDescription: manufacturerDescription || null,
       productDetails: productDetails || null,
-      areaDescription,
       price: price !== null && !Number.isNaN(price) ? price : null,
       imageUrl: getPublicUrl(key),
     },
