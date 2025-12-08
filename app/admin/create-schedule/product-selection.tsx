@@ -225,6 +225,17 @@ export default function ProductSelection() {
                   {product.manufacturerDescription || "No manufacturer desc"}
                 </p>
               </div>
+              <div className="relative h-16 w-20 max-w-[120px] flex-shrink-0">
+                {product.imageUrl && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={product.imageUrl}
+                    alt={product.description}
+                    className="h-full w-full object-cover rounded border border-slate-200"
+                    style={{ maxWidth: "120px" }}
+                  />
+                )}
+              </div>
               <Button
                 size="sm"
                 variant="outline"

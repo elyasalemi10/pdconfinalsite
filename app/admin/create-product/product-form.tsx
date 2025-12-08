@@ -29,6 +29,13 @@ const AREA_PREFIX: Record<Exclude<Area, "">, string> = {
 
 const AREA_OPTIONS: Area[] = ["Kitchen", "Bedroom", "Living Room", "Patio"];
 
+function prefixForArea(area: Area): string {
+  if (!area || !(area in AREA_PREFIX)) {
+    throw new Error("Invalid area");
+  }
+  return AREA_PREFIX[area as Exclude<Area, "">];
+}
+
 export default function CreateProductForm() {
   const [area, setArea] = useState<Area>("");
   const [areaDescription, setAreaDescription] = useState("");
@@ -59,7 +66,7 @@ export default function CreateProductForm() {
       return;
     }
 
-    const prefix = AREA_PREFIX[value];
+    const prefix = prefixForArea(value);
     const currentCount = areaCounters[prefix] ?? 0;
     const nextCount = currentCount + 1;
     setCode(`${prefix}${String(nextCount).padStart(3, "0")}`);
@@ -125,7 +132,7 @@ export default function CreateProductForm() {
     const draft = buildDraftFromForm();
     if (!draft) return;
 
-    const prefix = AREA_PREFIX[draft.area];
+    const prefix = prefixForArea(draft.area);
     setAreaCounters((prev) => ({
       ...prev,
       [prefix]: (prev[prefix] ?? 0) + 1,
@@ -324,7 +331,7 @@ export default function CreateProductForm() {
             </label>
             <div className="border-2 border-dashed border-slate-300 rounded-lg p-4 flex flex-col items-center justify-center gap-2 bg-slate-50">
               {imagePreview ? (
-                <div className="relative w-full aspect-video">
+                <div className="relative w-full max-w-[120px] aspect-[4/3]">
                   <Image
                     src={imagePreview}
                     alt="Preview"
@@ -409,7 +416,7 @@ export default function CreateProductForm() {
               )}
             </div>
             {draft.imagePreview && (
-              <div className="relative h-20 w-32 flex-shrink-0">
+              <div className="relative h-20 w-32 max-w-[120px] flex-shrink-0">
                 <Image
                   src={draft.imagePreview}
                   alt={draft.description}
