@@ -46,21 +46,26 @@ The `{#items}...{/items}` tags **must** wrap the table row that contains product
 
 ### Required Placeholders
 
-**Header Section:**
+**Header Section (Contact Information):**
 - `{{address}}` - The property address
-- `{{date}}` - The report date
+- `{{contact-name}}` - Contact person name
+- `{{company}}` - Company name
+- `{{phone-number}}` - Phone number
+- `{{email}}` - Email address
+- `{{date}}` - The report date (auto-formatted as "9 December 2025")
 
-**Table Loop:**
+**Table Loop (Product Rows):**
 Place these **inside** the `{#items}...{/items}` loop:
-- `{{code}}` - Product code (e.g., A001, B002)
-- `{%image}` - Product image (automatically sized to 120×90px)
+- `{{code}}` - Product code (auto-generated, e.g., A001, B002)
+- `{%image}` - Product image (automatically sized to 120×90px = 1.25 inches)
 - `{{description}}` - Product description
 - `{{manufacturer-description}}` - Manufacturer description
 - `{{product-details}}` - Product details
 - `{{area-description}}` - Area description (e.g., Kitchen, Bedroom)
 - `{{quantity}}` - Quantity
-- `{{price}}` - Price
 - `{{notes}}` - Optional notes
+
+**Note:** Code, Image, Description, Manufacturer Description, and Product Details are automatically filled from the product database.
 
 ## Creating the Template in Microsoft Word
 
@@ -69,16 +74,21 @@ Place these **inside** the `{#items}...{/items}` loop:
 2. Type the header text with placeholders:
    ```
    PRODUCT SELECTION
-   {{address}}
+   
+   Address: {{address}}
+   Contact: {{contact-name}}
+   Company: {{company}}
+   Phone: {{phone-number}}
+   Email: {{email}}
    Date: {{date}}
    ```
 3. **IMPORTANT:** Type placeholders as ONE continuous string without formatting
 
 ### Step 2: Create Table
-Create a table with 9 columns:
+Create a table with 8 columns:
 
-| Code | Image | Description | Manufacturer Description | Product Details | Area Description | Quantity | Price | Notes |
-|------|-------|-------------|--------------------------|-----------------|------------------|----------|-------|-------|
+| Code | Image | Description | Manufacturer Description | Product Details | Area Description | Quantity | Notes |
+|------|-------|-------------|--------------------------|-----------------|------------------|----------|-------|
 
 ### Step 3: Add Header Row
 First row should be the column headers (plain text, no placeholders).
@@ -93,8 +103,7 @@ First row should be the column headers (plain text, no placeholders).
    - Cell 5: `{{product-details}}`
    - Cell 6: `{{area-description}}`
    - Cell 7: `{{quantity}}`
-   - Cell 8: `{{price}}`
-   - Cell 9: `{{notes}}`
+   - Cell 8: `{{notes}}`
 3. In the row AFTER the data row, add: `{/items}`
 
 **Alternative:** Place loop tags in the same cells as placeholders (before first cell and after last cell).
@@ -102,17 +111,22 @@ First row should be the column headers (plain text, no placeholders).
 ### Example Structure:
 ```
 PRODUCT SELECTION
-{{address}}
+
+Address: {{address}}
+Contact: {{contact-name}}
+Company: {{company}}
+Phone: {{phone-number}}
+Email: {{email}}
 Date: {{date}}
 
 [Table]
-┌─────────────────────────────────────────────────────────────┐
-│ Code │ Image │ Description │ Manufacturer │ ... │ Notes    │  ← Header Row
-├─────────────────────────────────────────────────────────────┤
-│ {#items}                                                    │  ← Loop Start
-│ {{code}} │ {%image} │ {{description}} │ {{manufacturer...│  ← Data Row
-│ {/items}                                                    │  ← Loop End
-└─────────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────────┐
+│ Code │ Image │ Description │ Manufacturer │ ... │ Quantity │ Notes │  ← Header Row
+├────────────────────────────────────────────────────────────────────┤
+│ {#items}                                                           │  ← Loop Start
+│ {{code}} │ {%image} │ {{description}} │ {{manufacturer-...}}... │  ← Data Row
+│ {/items}                                                           │  ← Loop End
+└────────────────────────────────────────────────────────────────────┘
 ```
 
 ## Critical Rules for Placeholders

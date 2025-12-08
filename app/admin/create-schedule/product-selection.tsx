@@ -4,7 +4,7 @@ import Docxtemplater from "docxtemplater";
 import ImageModule from "docxtemplater-image-module-free";
 import { saveAs } from "file-saver";
 import PizZip from "pizzip";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 
@@ -23,7 +23,6 @@ type Product = {
 type SelectionRow = Product & {
   quantity: number;
   notes: string;
-  priceOverride: string;
   areaDescriptionOverride: string;
 };
 
@@ -78,7 +77,14 @@ export default function ProductSelection() {
   const [results, setResults] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
   const [selection, setSelection] = useState<SelectionRow[]>([]);
+  
+  // Contact information fields
   const [address, setAddress] = useState("");
+  const [contactName, setContactName] = useState("");
+  const [company, setCompany] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [email, setEmail] = useState("");
+  
   const [date, setDate] = useState(() =>
     new Date().toISOString().slice(0, 10)
   );
@@ -114,7 +120,6 @@ export default function ProductSelection() {
           ...product,
           quantity: 1,
           notes: "",
-          priceOverride: product.price?.toString() ?? "",
           areaDescriptionOverride: product.area,
         },
       ];
@@ -141,15 +146,10 @@ export default function ProductSelection() {
       return false;
     }
     const missing = selection.find(
-      (row) =>
-        !row.quantity ||
-        !row.areaDescriptionOverride ||
-        (row.priceOverride.trim() === "" && row.price === null)
+      (row) => !row.quantity || !row.areaDescriptionOverride
     );
     if (missing) {
-      setError(
-        "Quantity, area description, and price are required for each row."
-      );
+      setError("Quantity and area description are required for each product.");
       return false;
     }
     setError(null);
@@ -175,11 +175,7 @@ export default function ProductSelection() {
             "product-details": row.productDetails ?? "",
             "area-description": row.areaDescriptionOverride || row.area,
             quantity: row.quantity,
-            price:
-              row.priceOverride.trim() !== ""
-                ? row.priceOverride
-                : row.price ?? "",
-            notes: row.notes,
+            notes: row.notes || "",
           };
         })
       );
@@ -219,6 +215,10 @@ export default function ProductSelection() {
       // Set the template data
       doc.setData({
         address,
+        "contact-name": contactName,
+        company,
+        "phone-number": phoneNumber,
+        email,
         date: formatDate(date),
         items: itemsWithImages,
       });
@@ -251,7 +251,7 @@ export default function ProductSelection() {
         errorMessage.includes("duplicate")
       ) {
         setError(
-          "Template error: Word has split placeholders. Please delete and retype {{address}} and {{date}} carefully in the template file without any formatting (no bold, italic, etc). Make sure each placeholder is typed as one continuous string."
+          "Template error: Word has split placeholders. Please delete and retype placeholders carefully in the template file without any formatting (no bold, italic, etc). Make sure each placeholder is typed as one continuous string."
         );
       } else {
         setError(`Failed to generate document: ${errorMessage}`);
@@ -262,10 +262,10 @@ export default function ProductSelection() {
 
   return (
     <div className="space-y-6">
-      {/* Header Inputs */}
+      {/* Contact Information Section */}
       <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-6 space-y-4">
         <h3 className="text-lg font-semibold text-slate-900">
-          Document Information
+          Contact Information
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-1">
@@ -281,6 +281,59 @@ export default function ProductSelection() {
               required
             />
           </div>
+          
+          <div className="space-y-1">
+            <label className="block text-sm font-medium text-slate-700">
+              Contact Name
+            </label>
+            <input
+              type="text"
+              className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+              value={contactName}
+              onChange={(e) => setContactName(e.target.value)}
+              placeholder="Enter contact name"
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label className="block text-sm font-medium text-slate-700">
+              Company
+            </label>
+            <input
+              type="text"
+              className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+              value={company}
+              onChange={(e) => setCompany(e.target.value)}
+              placeholder="Enter company name"
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label className="block text-sm font-medium text-slate-700">
+              Phone Number
+            </label>
+            <input
+              type="tel"
+              className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              placeholder="Enter phone number"
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label className="block text-sm font-medium text-slate-700">
+              Email
+            </label>
+            <input
+              type="email"
+              className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter email address"
+            />
+          </div>
+
           <div className="space-y-1">
             <label className="block text-sm font-medium text-slate-700">
               Date
@@ -371,7 +424,6 @@ export default function ProductSelection() {
               <th className="p-3">Description</th>
               <th className="p-3">Area Desc</th>
               <th className="p-3">Quantity</th>
-              <th className="p-3">Price</th>
               <th className="p-3">Notes</th>
               <th className="p-3">Actions</th>
             </tr>
@@ -414,20 +466,6 @@ export default function ProductSelection() {
                 </td>
                 <td className="p-3">
                   <input
-                    type="number"
-                    step="0.01"
-                    min="0"
-                    className="w-24 rounded border border-slate-300 px-2 py-1 text-sm"
-                    value={row.priceOverride}
-                    onChange={(e) =>
-                      updateRow(row.id, { priceOverride: e.target.value })
-                    }
-                    placeholder={row.price?.toString() ?? ""}
-                    required
-                  />
-                </td>
-                <td className="p-3">
-                  <input
                     type="text"
                     className="w-full rounded border border-slate-300 px-2 py-1 text-sm"
                     value={row.notes}
@@ -451,7 +489,7 @@ export default function ProductSelection() {
             {selection.length === 0 && (
               <tr>
                 <td
-                  colSpan={8}
+                  colSpan={7}
                   className="p-4 text-sm text-slate-500 text-center"
                 >
                   No products added yet. Search and add products above.
