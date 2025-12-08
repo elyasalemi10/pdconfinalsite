@@ -13,10 +13,10 @@ export default async function CreateSchedulePage() {
           <div>
             <p className="text-sm text-slate-500">Admin</p>
             <h1 className="text-2xl font-semibold text-slate-900">
-              Create Product Schedule
+              Create Product Selection
             </h1>
             <p className="text-sm text-slate-500">
-              Protected area. Add scheduling UI here.
+              Protected area. Add product selection UI here.
             </p>
           </div>
           <Link href="/admin">

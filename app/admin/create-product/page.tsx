@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { requireAdmin } from "@/lib/auth";
+import CreateProductForm from "./product-form";
 
 export default async function CreateProductPage() {
   await requireAdmin();
@@ -16,7 +17,7 @@ export default async function CreateProductPage() {
               Create Product
             </h1>
             <p className="text-sm text-slate-500">
-              Protected area. Add product creation UI here.
+              Add product details, generate the code, and upload the main image.
             </p>
           </div>
           <Link href="/admin">
@@ -24,12 +25,7 @@ export default async function CreateProductPage() {
           </Link>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-6">
-          <p className="text-slate-700">
-            This page is protected with the admin session. Build the product
-            creation form here.
-          </p>
-        </div>
+        <CreateProductForm />
       </div>
     </main>
   );
