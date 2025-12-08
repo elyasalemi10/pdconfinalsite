@@ -1,6 +1,7 @@
 "use client";
 
 import Docxtemplater from "docxtemplater";
+import ImageModule from "docxtemplater-image-module-free";
 import { saveAs } from "file-saver";
 import PizZip from "pizzip";
 import { useEffect, useMemo, useState } from "react";
@@ -48,6 +49,30 @@ function formatDate(dateString: string): string {
   return `${day} ${month} ${year}`;
 }
 
+async function fetchImageAsBase64(imageUrl: string): Promise<string> {
+  try {
+    const response = await fetch(imageUrl);
+    const blob = await response.blob();
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (typeof reader.result === "string") {
+          // Remove the data:image/xxx;base64, prefix
+          const base64 = reader.result.split(",")[1];
+          resolve(base64);
+        } else {
+          reject(new Error("Failed to read image"));
+        }
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  } catch (error) {
+    console.error("Error fetching image:", error);
+    return ""; // Return empty string if image fetch fails
+  }
+}
+
 export default function ProductSelection() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Product[]>([]);
@@ -79,25 +104,6 @@ export default function ProductSelection() {
       setLoading(false);
     }
   }
-
-  const placeholderRows = useMemo(
-    () =>
-      selection.map((row) => ({
-        code: row.code,
-        image: row.imageUrl,
-        description: row.description,
-        "manufacturer-description": row.manufacturerDescription ?? "",
-        "product-details": row.productDetails ?? "",
-        "area-description": row.areaDescriptionOverride || row.area,
-        quantity: row.quantity,
-        price:
-          row.priceOverride.trim() !== ""
-            ? row.priceOverride
-            : row.price ?? "",
-        notes: row.notes,
-      })),
-    [selection]
-  );
 
   function addProduct(product: Product) {
     setSelection((prev) => {
@@ -157,12 +163,49 @@ export default function ProductSelection() {
     setError(null);
 
     try {
+      // Fetch all product images and convert to base64
+      const itemsWithImages = await Promise.all(
+        selection.map(async (row) => {
+          const imageBase64 = await fetchImageAsBase64(row.imageUrl);
+          return {
+            code: row.code,
+            image: imageBase64, // Base64 string for image module
+            description: row.description,
+            "manufacturer-description": row.manufacturerDescription ?? "",
+            "product-details": row.productDetails ?? "",
+            "area-description": row.areaDescriptionOverride || row.area,
+            quantity: row.quantity,
+            price:
+              row.priceOverride.trim() !== ""
+                ? row.priceOverride
+                : row.price ?? "",
+            notes: row.notes,
+          };
+        })
+      );
+
       // Fetch the template
       const templateResponse = await fetch("/product-selection.docx");
       const templateBlob = await templateResponse.arrayBuffer();
 
       const zip = new PizZip(templateBlob);
+
+      // Configure ImageModule for product images
+      const imageModule = new ImageModule({
+        centered: false,
+        getImage: (tagValue: string) => {
+          // tagValue is the base64 string
+          return Buffer.from(tagValue, "base64");
+        },
+        getSize: () => {
+          // 1.25 inches max width = 120 pixels at 96 DPI
+          // Maintain aspect ratio with proportional height
+          return [120, 90]; // width × height in pixels
+        },
+      });
+
       const doc = new Docxtemplater(zip, {
+        modules: [imageModule],
         paragraphLoop: true,
         linebreaks: true,
       });
@@ -171,7 +214,7 @@ export default function ProductSelection() {
       doc.setData({
         address,
         date: formatDate(date),
-        items: placeholderRows,
+        items: itemsWithImages,
       });
 
       // Render the document
@@ -195,9 +238,12 @@ export default function ProductSelection() {
         err instanceof Error
           ? err.message
           : "Failed to generate document. Please check the template format.";
-      
+
       // Check if it's a duplicate tag error
-      if (errorMessage.includes("Duplicate") || errorMessage.includes("duplicate")) {
+      if (
+        errorMessage.includes("Duplicate") ||
+        errorMessage.includes("duplicate")
+      ) {
         setError(
           "Template error: Word has split placeholders. Please delete and retype {{address}} and {{date}} carefully in the template file without any formatting (no bold, italic, etc). Make sure each placeholder is typed as one continuous string."
         );
