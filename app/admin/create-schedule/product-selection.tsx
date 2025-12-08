@@ -50,22 +50,18 @@ function formatDate(dateString: string): string {
 
 async function fetchImageAsBase64(imageUrl: string): Promise<string> {
   try {
-    const response = await fetch(imageUrl);
-    const blob = await response.blob();
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        if (typeof reader.result === "string") {
-          // Remove the data:image/xxx;base64, prefix
-          const base64 = reader.result.split(",")[1];
-          resolve(base64);
-        } else {
-          reject(new Error("Failed to read image"));
-        }
-      };
-      reader.onerror = reject;
-      reader.readAsDataURL(blob);
-    });
+    // Use proxy API to avoid CORS issues with R2
+    const response = await fetch(
+      `/api/admin/proxy-image?url=${encodeURIComponent(imageUrl)}`
+    );
+    
+    if (!response.ok) {
+      console.error("Failed to fetch image via proxy:", response.status);
+      return "";
+    }
+
+    const data = await response.json();
+    return data.base64 || "";
   } catch (error) {
     console.error("Error fetching image:", error);
     return ""; // Return empty string if image fetch fails

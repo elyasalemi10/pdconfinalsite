@@ -30,30 +30,45 @@ async function nextCodeForArea(area: string) {
 }
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const q = searchParams.get("q") ?? "";
+  try {
+    const { searchParams } = new URL(request.url);
+    const q = searchParams.get("q") ?? "";
 
-  const where =
-    q.trim().length === 0
-      ? {}
-      : {
-          OR: [
-            { code: { contains: q, mode: "insensitive" as const } },
-            { name: { contains: q, mode: "insensitive" as const } },
-            { description: { contains: q, mode: "insensitive" as const } },
-            { manufacturerDescription: { contains: q, mode: "insensitive" as const } },
-            { productDetails: { contains: q, mode: "insensitive" as const } },
-            { area: { contains: q, mode: "insensitive" as const } },
-          ],
-        };
+    const where =
+      q.trim().length === 0
+        ? {}
+        : {
+            OR: [
+              { code: { contains: q, mode: "insensitive" as const } },
+              { name: { contains: q, mode: "insensitive" as const } },
+              { description: { contains: q, mode: "insensitive" as const } },
+              {
+                manufacturerDescription: {
+                  contains: q,
+                  mode: "insensitive" as const,
+                },
+              },
+              {
+                productDetails: { contains: q, mode: "insensitive" as const },
+              },
+              { area: { contains: q, mode: "insensitive" as const } },
+            ],
+          };
 
-  const products = await prisma.product.findMany({
-    where,
-    orderBy: { createdAt: "desc" },
-    take: 50,
-  });
+    const products = await prisma.product.findMany({
+      where,
+      orderBy: { createdAt: "desc" },
+      take: 50,
+    });
 
-  return NextResponse.json({ products });
+    return NextResponse.json({ products });
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch products", products: [] },
+      { status: 500 }
+    );
+  }
 }
 
 export async function POST(request: Request) {
