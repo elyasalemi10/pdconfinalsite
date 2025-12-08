@@ -38,11 +38,11 @@ export async function GET(request: Request) {
       ? {}
       : {
           OR: [
-            { code: { contains: q, mode: "insensitive" } },
-            { description: { contains: q, mode: "insensitive" } },
-            { manufacturerDescription: { contains: q, mode: "insensitive" } },
-            { productDetails: { contains: q, mode: "insensitive" } },
-            { area: { contains: q, mode: "insensitive" } },
+            { code: { contains: q, mode: "insensitive" as const } },
+            { description: { contains: q, mode: "insensitive" as const } },
+            { manufacturerDescription: { contains: q, mode: "insensitive" as const } },
+            { productDetails: { contains: q, mode: "insensitive" as const } },
+            { area: { contains: q, mode: "insensitive" as const } },
           ],
         };
 
