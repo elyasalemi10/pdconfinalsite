@@ -293,7 +293,6 @@ export default function ProductSelection() {
                       }
                       placeholder={
                         defaultAreaDescription ||
-                        row.areaDescription ||
                         row.area
                       }
                       required
