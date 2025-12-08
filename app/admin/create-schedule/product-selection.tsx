@@ -120,7 +120,6 @@ export default function ProductSelection() {
         !row.quantity ||
         !(
           row.areaDescriptionOverride ||
-          row.areaDescription ||
           defaultAreaDescription
         ) ||
         (row.priceOverride.trim() === "" && row.price === null)
