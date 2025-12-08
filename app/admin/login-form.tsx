@@ -42,7 +42,7 @@ export default function AdminLoginForm({ redirectTo }: Props) {
 
       router.push(redirectTo || "/admin");
       router.refresh();
-    } catch (err) {
+    } catch {
       setError("Network error. Please try again.");
     } finally {
       setLoading(false);

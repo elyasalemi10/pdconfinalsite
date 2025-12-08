@@ -1,10 +1,6 @@
 import { NextResponse } from "next/server";
 
-import {
-  SESSION_COOKIE_NAME,
-  createSession,
-  setSessionCookie,
-} from "@/lib/auth";
+import { createSession, setSessionCookie } from "@/lib/auth";
 
 export async function POST(request: Request) {
   const adminUsername = process.env.ADMIN_USERNAME;
