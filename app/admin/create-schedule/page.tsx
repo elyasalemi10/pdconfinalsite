@@ -3,8 +3,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { requireAdmin } from "@/lib/auth";
 
-export default function CreateSchedulePage() {
-  requireAdmin();
+export default async function CreateSchedulePage() {
+  await requireAdmin();
 
   return (
     <main className="min-h-screen bg-slate-50 py-16 px-4">

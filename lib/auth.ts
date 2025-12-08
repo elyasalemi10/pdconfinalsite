@@ -108,13 +108,14 @@ export function clearSessionCookie(response: NextResponse) {
   });
 }
 
-export function getSessionFromCookies(): SessionPayload | null {
-  const token = cookies().get(SESSION_COOKIE_NAME)?.value;
+export async function getSessionFromCookies(): Promise<SessionPayload | null> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
   return verifySession(token);
 }
 
-export function requireAdmin() {
-  const session = getSessionFromCookies();
+export async function requireAdmin() {
+  const session = await getSessionFromCookies();
   if (!session) {
     redirect("/admin");
   }

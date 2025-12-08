@@ -5,8 +5,8 @@ import AdminLoginForm, { LogoutButton } from "./login-form";
 import { Button } from "@/components/ui/button";
 import { getSessionFromCookies } from "@/lib/auth";
 
-export default function AdminPage() {
-  const session = getSessionFromCookies();
+export default async function AdminPage() {
+  const session = await getSessionFromCookies();
 
   if (!session) {
     return (
