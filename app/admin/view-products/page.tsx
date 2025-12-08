@@ -37,6 +37,7 @@ export default async function ViewProductsPage() {
             <thead>
               <tr className="bg-slate-50 text-left text-xs uppercase text-slate-500">
                 <th className="p-3">Code</th>
+                <th className="p-3">Name</th>
                 <th className="p-3">Image</th>
                 <th className="p-3">Description</th>
                 <th className="p-3">Manufacturer</th>
@@ -50,6 +51,7 @@ export default async function ViewProductsPage() {
               {products.map((p) => (
                 <tr key={p.id} className="border-t border-slate-100">
                   <td className="p-3 font-semibold">{p.code}</td>
+                  <td className="p-3 font-semibold">{p.name}</td>
                   <td className="p-3">
                     <div className="relative h-12 w-16 max-w-[120px]">
                       {p.imageUrl ? (
@@ -81,7 +83,7 @@ export default async function ViewProductsPage() {
               {products.length === 0 && (
                 <tr>
                   <td
-                    colSpan={8}
+                    colSpan={9}
                     className="p-4 text-sm text-slate-500 text-center"
                   >
                     No products found.

@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS "Product" (
   "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "code" TEXT NOT NULL UNIQUE,
+  "name" TEXT NOT NULL,
   "area" TEXT NOT NULL,
   "description" TEXT NOT NULL,
   "manufacturerDescription" TEXT,

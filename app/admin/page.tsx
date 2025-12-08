@@ -35,13 +35,18 @@ export default async function AdminPage() {
           <h2 className="text-lg font-semibold text-slate-900">
             Admin Actions
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <Link href="/admin/create-product" className="w-full">
               <Button className="w-full">Create Product</Button>
             </Link>
             <Link href="/admin/create-schedule" className="w-full">
               <Button variant="outline" className="w-full">
-                Create Product Schedule
+                Create Product Selection
+              </Button>
+            </Link>
+            <Link href="/admin/view-products" className="w-full">
+              <Button variant="outline" className="w-full">
+                View Products
               </Button>
             </Link>
           </div>

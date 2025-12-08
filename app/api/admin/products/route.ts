@@ -58,6 +58,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   const formData = await request.formData();
 
+  const name = formData.get("name")?.toString() || "";
   const area = formData.get("area")?.toString() || "";
   const description = formData.get("description")?.toString() || "";
   const manufacturerDescription =
@@ -65,6 +66,13 @@ export async function POST(request: Request) {
   const productDetails = formData.get("productDetails")?.toString() || "";
   const priceRaw = formData.get("price")?.toString() || "";
   const image = formData.get("image") as File | null;
+
+  if (!name.trim()) {
+    return NextResponse.json(
+      { error: "Product name is required." },
+      { status: 400 }
+    );
+  }
 
   if (!area || !AREA_PREFIX[area]) {
     return NextResponse.json({ error: "Area is required." }, { status: 400 });
@@ -98,6 +106,7 @@ export async function POST(request: Request) {
   const product = await prisma.product.create({
     data: {
       code,
+      name,
       area,
       description,
       manufacturerDescription: manufacturerDescription || null,
