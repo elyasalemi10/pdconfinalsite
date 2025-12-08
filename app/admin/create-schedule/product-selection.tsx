@@ -195,7 +195,13 @@ export default function ProductSelection() {
         centered: false,
         getImage: (tagValue: string) => {
           // tagValue is the base64 string
-          return Buffer.from(tagValue, "base64");
+          // Convert base64 to Uint8Array for browser compatibility
+          const binaryString = atob(tagValue);
+          const bytes = new Uint8Array(binaryString.length);
+          for (let i = 0; i < binaryString.length; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+          }
+          return bytes;
         },
         getSize: () => {
           // 1.25 inches max width = 120 pixels at 96 DPI
