@@ -39,6 +39,7 @@ export async function GET(request: Request) {
       : {
           OR: [
             { code: { contains: q, mode: "insensitive" as const } },
+            { name: { contains: q, mode: "insensitive" as const } },
             { description: { contains: q, mode: "insensitive" as const } },
             { manufacturerDescription: { contains: q, mode: "insensitive" as const } },
             { productDetails: { contains: q, mode: "insensitive" as const } },

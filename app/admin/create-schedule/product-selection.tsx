@@ -191,9 +191,19 @@ export default function ProductSelection() {
       setGenerating(false);
     } catch (err) {
       console.error("Error generating document:", err);
-      setError(
-        "Failed to generate document. Please check the template format."
-      );
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : "Failed to generate document. Please check the template format.";
+      
+      // Check if it's a duplicate tag error
+      if (errorMessage.includes("Duplicate") || errorMessage.includes("duplicate")) {
+        setError(
+          "Template error: Word has split placeholders. Please delete and retype {{address}} and {{date}} carefully in the template file without any formatting (no bold, italic, etc). Make sure each placeholder is typed as one continuous string."
+        );
+      } else {
+        setError(`Failed to generate document: ${errorMessage}`);
+      }
       setGenerating(false);
     }
   }
