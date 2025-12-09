@@ -163,6 +163,18 @@ export default function ProductSelection() {
       const itemsWithImages = await Promise.all(
         selection.map(async (row) => {
           const imageBase64 = await fetchImageAsBase64(row.imageUrl);
+          
+          // Format price safely
+          let priceFormatted = "";
+          if (row.price && typeof row.price === "number") {
+            priceFormatted = `$${row.price.toFixed(2)}`;
+          } else if (row.price) {
+            const priceNum = Number(row.price);
+            if (!isNaN(priceNum)) {
+              priceFormatted = `$${priceNum.toFixed(2)}`;
+            }
+          }
+          
           return {
             code: row.code,
             image: imageBase64, // Base64 string for image module
@@ -171,7 +183,7 @@ export default function ProductSelection() {
             "product-details": row.productDetails ?? "",
             "area-description": row.areaDescriptionOverride || row.area,
             quantity: row.quantity,
-            price: row.price ? `$${row.price.toFixed(2)}` : "",
+            price: priceFormatted,
             notes: row.notes || "",
           };
         })
