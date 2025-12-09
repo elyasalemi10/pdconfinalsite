@@ -171,6 +171,7 @@ export default function ProductSelection() {
             "product-details": row.productDetails ?? "",
             "area-description": row.areaDescriptionOverride || row.area,
             quantity: row.quantity,
+            price: row.price ? `$${row.price.toFixed(2)}` : "",
             notes: row.notes || "",
           };
         })
