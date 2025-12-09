@@ -189,8 +189,8 @@ export default function ProductSelection() {
         })
       );
 
-      // Fetch the template (with cache busting)
-      const templateResponse = await fetch(`/product-selection.docx?v=${Date.now()}`);
+      // Fetch the template (with cache busting and new filename)
+      const templateResponse = await fetch(`/product-selection-v2.docx?v=${Date.now()}`);
       const templateBlob = await templateResponse.arrayBuffer();
 
       const zip = new PizZip(templateBlob);
