@@ -189,8 +189,9 @@ export default function ProductSelection() {
         })
       );
 
-      // Fetch the template (with cache busting and new filename)
-      const templateResponse = await fetch(`/product-selection-v2.docx?v=${Date.now()}`);
+      // Fetch the template from R2 (with fallback to local)
+      const templateUrl = process.env.NEXT_PUBLIC_TEMPLATE_URL || `/product-selection-v2.docx?v=${Date.now()}`;
+      const templateResponse = await fetch(templateUrl);
       const templateBlob = await templateResponse.arrayBuffer();
 
       const zip = new PizZip(templateBlob);
